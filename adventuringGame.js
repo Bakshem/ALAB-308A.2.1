@@ -15,7 +15,7 @@ roll (mod = 0) {
     const result = Math.floor(Math.random() * 20) + 1 + mod;
     console.log(`${this.name} rolled a ${result}.`)
 }
-}
+};
 
 adventurer.roll();
 
@@ -30,7 +30,7 @@ class Character {
         const result = Math.floor(Math.random() * 20) + 1 + mod;
         console.log(`${this.name} rolled a ${result}.`)
     }
-}
+};
 
 const robin = new Character("Robin");
 robin.inventory = ["sword", "potion", "artifact"];
@@ -41,6 +41,7 @@ robin.companion.companion.type = "Flea";
 robin.companion.companion.inventory = ["small hat", "sunglasses"];
 
 robin.roll();
+robin.companion.roll();
 
 class Adventurer extends Character {
     constructor (name, role) {
@@ -56,3 +57,49 @@ class Adventurer extends Character {
       super.roll();
     }
 }
+
+class Companion extends Character {
+    constructor(name,type) {
+        super(name);
+        this.type = type;
+    }
+}
+
+const adventurerRobin = new Adventurer("Robin","Fighter");
+
+
+class CharacterStatic {
+    static MAX_HEALTH = 100;
+    constructor(name) {
+        this.name = name;
+        this.health = CharacterStatic.MAX_HEALTH;
+        this.inventory = [];
+    }
+}
+class AdventurerStatic extends CharacterStatic {
+    static ROLES = ["Fighter","Healer","Wizard"];
+    constructor(name) {
+        this.name = name;
+        this.role = role;
+        this.inventory = [];
+    }
+}
+class AdventurerFactory {  
+    constructor (role) {
+      this.role = role;
+      this.adventurers = [];
+    }
+    generate (name) {
+      const newAdventurer = new AdventurerStatic(name, this.role);
+      this.adventurers.push(newAdventurer);
+    }
+    findByIndex (index) {
+      return this.adventurers[index];
+    }
+    findByName (name) {
+      return this.adventurers.find((a) => a.name === name);
+    }
+  }
+const healers = new AdventurerFactory("Healer");
+const robin1 = healers.generate("Robin");
+console.log(robin1);
